@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet,TouchableOpacity, View, Image } from 'react-native'
+import { StyleSheet,TouchableOpacity, View, Image, } from 'react-native'
 
 const HomeHeader = () => {
     return (
@@ -18,7 +18,7 @@ export default HomeHeader
 
 const styles = StyleSheet.create({
     container: {
-        height: 30,
+        height: 60,
         paddingHorizontal: 15,
         flexDirection: 'row',
         justifyContent: 'flex-end',

@@ -1,4 +1,13 @@
-export const furnitures = [
+export interface Furniture {
+  type: string;
+  id: string;
+  name: string;
+  desc: string;
+  price: number;
+  images: Array<any>;
+  rating?: number;
+}
+export const furnitures: Furniture[] = [
   {
     type: 'Chair',
     id: '005',
@@ -46,7 +55,7 @@ export const furnitures = [
     name: 'Old Green Armchair',
     desc: 'Zenith Solid Wood Old Green Armchair in Warm Chestnut Finish',
     price: 750,
-    images: [require('../Images/008.png'),require('../Images/009.png')],
+    images: [require('../Images/008.png'), require('../Images/009.png')],
   },
   {
     type: 'Sofa',
@@ -199,13 +208,42 @@ export const furnitures = [
     desc: 'Ornate Freestanding Bath in Warm Chestnut Finish',
     price: 1390,
     images: [require('../Images/028.png')],
-  }
+  },
 ];
 export function exploreFurniture() {
-  let _furnitures = [...furnitures.filter(item => item.type ==='Chair').slice(0,2),
-  ...furnitures.filter(item => item.type ==='Sofa').slice(0,2),
-  ...furnitures.filter(item => item.type ==='Bed').slice(0,2),
-  ...furnitures.filter(item => item.type ==='Desk').slice(0,2),
-  ...furnitures.filter(item => item.type ==='Bath').slice(0,2)];
+  let _furnitures = [
+    ...furnitures.filter((item) => item.type === 'Sofa').slice(0, 2),
+    ...furnitures.filter((item) => item.type === 'Bed').slice(0, 2),
+    ...furnitures.filter((item) => item.type === 'Chair').slice(0, 2),
+    ...furnitures.filter((item) => item.type === 'Desk').slice(0, 2),
+    ...furnitures.filter((item) => item.type === 'Bath').slice(0, 2),
+  ];
   return _furnitures;
 }
+export interface SegmentItem {
+  name: string;
+  type: 'Chair' | 'Sofa' | 'Bed' | 'Desk' | 'Bath';
+}
+
+export const segmentItems: SegmentItem[] = [
+  {
+    name: 'CHAIRS',
+    type: 'Chair',
+  },
+  {
+    name: 'SOFAS',
+    type: 'Sofa',
+  },
+  {
+    name: 'DESKS',
+    type: 'Desk',
+  },
+  {
+    name: 'BEDS',
+    type: 'Bed',
+  },
+  {
+    name: 'BATHS',
+    type: 'Bath',
+  },
+];
