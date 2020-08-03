@@ -100,6 +100,15 @@ export const furnitures: Furniture[] = [
     images: [require('../Images/013.png')],
   },
   {
+    type: 'Sofa',
+    rating: 3,
+    id: '026',
+    name: 'Chesterfield Sofa',
+    desc: 'Chesterfield Sofa in Warm Chestnut Finish',
+    price: 1359,
+    images: [require('../Images/029.png')],
+  },
+  {
     type: 'Bed',
     rating: 3.3,
     id: '011',

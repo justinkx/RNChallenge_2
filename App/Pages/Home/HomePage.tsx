@@ -7,7 +7,9 @@ import {
   Text,
   StatusBar,
   Animated,
-  useWindowDimensions,
+  Dimensions,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {colors} from '../../Theme/index';
 import HomeHeader from '../../Components/HomeHeader';
@@ -21,10 +23,10 @@ import {
 import ExploreItem from '../../Components/ExploreItem';
 import SegmentButton from '../../Components/SegmentButton';
 import SegmentFurnitureItem from '../../Components/SegmentFurnitureItem';
+const {width, height} = Dimensions.get('window');
+const PADDING_TOP = width / 2.2 + 70;
 
 const HomePage = () => {
-  const {width, height} = useWindowDimensions();
-  const PADDING_TOP = width / 2.2 + 70;
   const exploreItems = exploreFurniture();
   console.log('exploreItems', exploreItems);
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -90,10 +92,11 @@ const HomePage = () => {
             ))}
           </ScrollView>
         </View>
-        <ScrollView
+        <FlatList
           contentInsetAdjustmentBehavior="automatic"
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={16}
+          data={segmentFurnitures}
           onScroll={Animated.event(
             [
               {
@@ -106,15 +109,23 @@ const HomePage = () => {
             ],
             {useNativeDriver: false},
           )}
-          style={styles.scrollView}>
-          {segmentFurnitures.map((furniture: Furniture, index: number) => (
-            <SegmentFurnitureItem
-              item={furniture}
-              key={furniture.id}
-              index={index + 1}
-            />
-          ))}
-        </ScrollView>
+          style={styles.scrollView}
+          keyExtractor={(item: Furniture) => item.id}
+          renderItem={({item, index}) => (
+            <SegmentFurnitureItem item={item} index={index + 1} />
+          )}
+          ListEmptyComponent={() => (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                height: 200,
+                alignItems: 'center',
+              }}>
+              <ActivityIndicator color={colors.button} />
+            </View>
+          )}
+        />
       </View>
     </>
   );
@@ -125,6 +136,7 @@ export default HomePage;
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
+    height: height,
   },
   safeAreaView: {
     flex: 1,

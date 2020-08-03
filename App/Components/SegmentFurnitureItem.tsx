@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,6 +10,8 @@ import {
 import {Furniture} from '../Assets/Api/furniture';
 import {colors} from '../Theme/index';
 import {Rating, AirbnbRating} from 'react-native-ratings';
+import Modal from 'react-native-modal';
+import Carousel from './Carousel/Carousel';
 
 type SegmentFurnitureItemProps = {
   item: Furniture;
@@ -17,6 +19,7 @@ type SegmentFurnitureItemProps = {
 };
 const SegmentFurnitureItem = ({item, index}: SegmentFurnitureItemProps) => {
   const {width, height} = useWindowDimensions();
+  const [showModal, setModal] = useState(false);
   return (
     <View
       style={[
@@ -92,7 +95,8 @@ const SegmentFurnitureItem = ({item, index}: SegmentFurnitureItemProps) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View
+        <TouchableOpacity
+          onPress={() => setModal(true)}
           style={[
             {
               width: width * 0.6 - 20,
@@ -103,15 +107,29 @@ const SegmentFurnitureItem = ({item, index}: SegmentFurnitureItemProps) => {
             },
           ]}>
           <Image
-            resizeMode={'contain'}
+            resizeMethod={'scale'}
+            resizeMode={'stretch'}
             style={{
               width: width * 0.5,
               height: height * 0.2,
             }}
             source={item.images[0]}
           />
-        </View>
+        </TouchableOpacity>
       </TouchableOpacity>
+      <Modal
+        onBackdropPress={() => {
+          setModal(false);
+        }}
+        onBackButtonPress={() => {
+          setModal(false);
+        }}
+        useNativeDriver={true}
+        animationIn={'zoomIn'}
+        animationOut={'zoomOut'}
+        isVisible={showModal}>
+        <Carousel images={item.images} />
+      </Modal>
     </View>
   );
 };
