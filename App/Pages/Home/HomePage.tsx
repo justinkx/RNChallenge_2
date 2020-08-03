@@ -24,7 +24,7 @@ import SegmentFurnitureItem from '../../Components/SegmentFurnitureItem';
 
 const HomePage = () => {
   const {width, height} = useWindowDimensions();
-  const PADDING_TOP = width / 2.2 + 50;
+  const PADDING_TOP = width / 2.2 + 70;
   const exploreItems = exploreFurniture();
   console.log('exploreItems', exploreItems);
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -48,8 +48,9 @@ const HomePage = () => {
         backgroundColor={colors.backgroundColor}
         barStyle="dark-content"
       />
-      <SafeAreaView></SafeAreaView>
-      <SafeAreaView style={[styles.safeAreaView]}>
+
+      <View style={[styles.safeAreaView]}>
+        <SafeAreaView></SafeAreaView>
         <Animated.View
           style={{
             height: animatedHeight,
@@ -93,8 +94,6 @@ const HomePage = () => {
           contentInsetAdjustmentBehavior="automatic"
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={16}
-          bounces={false}
-          bouncesZoom={false}
           onScroll={Animated.event(
             [
               {
@@ -116,7 +115,7 @@ const HomePage = () => {
             />
           ))}
         </ScrollView>
-      </SafeAreaView>
+      </View>
     </>
   );
 };
@@ -133,6 +132,7 @@ const styles = StyleSheet.create({
   },
   exploreContainer: {
     paddingLeft: 10,
+    marginBottom: 10,
   },
   explore: {
     fontSize: 22,

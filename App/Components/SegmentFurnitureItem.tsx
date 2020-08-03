@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {Furniture} from '../Assets/Api/furniture';
 import {colors} from '../Theme/index';
+import {Rating, AirbnbRating} from 'react-native-ratings';
 
 type SegmentFurnitureItemProps = {
   item: Furniture;
@@ -51,6 +52,45 @@ const SegmentFurnitureItem = ({item, index}: SegmentFurnitureItemProps) => {
             {item.desc}
           </Text>
           <Text style={[styles.price]}>{item.price}$</Text>
+          <View style={[styles.ratingView]}>
+            <Rating
+              type="star"
+              ratingCount={5}
+              imageSize={15}
+              ratingColor={'gray'}
+              ratingBackgroundColor={'gray'}
+              showRating={false}
+              tintColor={colors.backgroundColor}
+              readonly
+            />
+            <Text style={[styles.rating]}>{item.rating}</Text>
+          </View>
+          <View style={[styles.bagContainer]}>
+            <TouchableOpacity style={[styles.bagItem]}>
+              <Image
+                resizeMode={'contain'}
+                style={[styles.bagIcon]}
+                source={require('../Assets/Icons/cart.png')}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.bagItem,
+                {
+                  marginLeft: 20,
+                },
+              ]}>
+              <Image
+                resizeMode={'contain'}
+                style={[styles.bagIcon]}
+                source={
+                  index % 2 === 0
+                    ? require('../Assets/Icons/like.png')
+                    : require('../Assets/Icons/unlike.png')
+                }
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View
           style={[
@@ -99,6 +139,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: 'black',
   },
   desc: {
     fontSize: 14,
@@ -111,5 +152,42 @@ const styles = StyleSheet.create({
     color: colors.button,
     fontWeight: 'bold',
     fontSize: 14,
+  },
+  ratingView: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  rating: {
+    marginLeft: 5,
+    fontSize: 8,
+    fontWeight: '600',
+    color: 'black',
+  },
+  bagContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  bagItem: {
+    width: 35,
+    height: 35,
+    borderRadius: 35 / 2,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  bagIcon: {
+    width: 20,
+    height: 20,
   },
 });
