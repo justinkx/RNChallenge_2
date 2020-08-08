@@ -23,10 +23,17 @@ import {
 import ExploreItem from '../../Components/ExploreItem';
 import SegmentButton from '../../Components/SegmentButton';
 import SegmentFurnitureItem from '../../Components/SegmentFurnitureItem';
+import {SharedStackParams} from '../../Navigation/Navigator';
+import {StackNavigationProp} from '@react-navigation/stack';
+
 const {width, height} = Dimensions.get('window');
 const PADDING_TOP = width / 2.2 + 70;
 
-const HomePage = () => {
+type HomeNavigationProp = StackNavigationProp<SharedStackParams, 'Details'>;
+type Props = {
+  navigation: HomeNavigationProp;
+};
+const HomePage = ({navigation}: Props) => {
   const exploreItems = exploreFurniture();
   console.log('exploreItems', exploreItems);
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -68,7 +75,19 @@ const HomePage = () => {
               bounces
               showsHorizontalScrollIndicator={false}>
               {exploreItems.map((item: Furniture, index: number) => (
-                <ExploreItem index={index + 1} item={item} key={item.id} />
+                <ExploreItem
+                  onClick={(item: Furniture, index: number) =>
+                    navigation.push('Details', {
+                      id: item.id,
+                      index: index,
+                      selected: item,
+                      shareId: 'explore',
+                    })
+                  }
+                  index={index + 1}
+                  item={item}
+                  key={item.id}
+                />
               ))}
             </ScrollView>
           </View>
@@ -112,7 +131,18 @@ const HomePage = () => {
           style={styles.scrollView}
           keyExtractor={(item: Furniture) => item.id}
           renderItem={({item, index}) => (
-            <SegmentFurnitureItem item={item} index={index + 1} />
+            <SegmentFurnitureItem
+              onClick={(item: Furniture, index: number) =>
+                navigation.push('Details', {
+                  id: item.id,
+                  selected: item,
+                  index: index,
+                  shareId: 'furniture',
+                })
+              }
+              item={item}
+              index={index + 1}
+            />
           )}
           ListEmptyComponent={() => (
             <View

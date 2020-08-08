@@ -12,12 +12,18 @@ import {colors} from '../Theme/index';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import Modal from 'react-native-modal';
 import Carousel from './Carousel/Carousel';
+import {SharedElement} from 'react-navigation-shared-element';
 
 type SegmentFurnitureItemProps = {
   item: Furniture;
   index: number;
+  onClick: Function;
 };
-const SegmentFurnitureItem = ({item, index}: SegmentFurnitureItemProps) => {
+const SegmentFurnitureItem = ({
+  item,
+  index,
+  onClick,
+}: SegmentFurnitureItemProps) => {
   const {width, height} = useWindowDimensions();
   const [showModal, setModal] = useState(false);
   return (
@@ -40,7 +46,9 @@ const SegmentFurnitureItem = ({item, index}: SegmentFurnitureItemProps) => {
           transform: [{scaleX: 1.4}],
         }}
       />
-      <TouchableOpacity style={[styles.clickable]}>
+      <TouchableOpacity
+        onPress={() => onClick(item, index)}
+        style={[styles.clickable]}>
         <View
           style={[
             styles.textContainer,
@@ -48,13 +56,18 @@ const SegmentFurnitureItem = ({item, index}: SegmentFurnitureItemProps) => {
               width: width * 0.4,
             },
           ]}>
-          <Text numberOfLines={2} style={[styles.name]}>
-            {item.name}
-          </Text>
+          <SharedElement style={{}} id={`furniture-${item.name}-${item.id}`}>
+            <Text numberOfLines={2} style={[styles.name]}>
+              {item.name}
+            </Text>
+          </SharedElement>
+
           <Text numberOfLines={2} style={[styles.desc]}>
             {item.desc}
           </Text>
-          <Text style={[styles.price]}>{item.price}$</Text>
+          <SharedElement id={`furniture-${item.price}-${item.id}`}>
+            <Text style={[styles.price]}>{item.price}$</Text>
+          </SharedElement>
           <View style={[styles.ratingView]}>
             <Rating
               type="star"
@@ -106,15 +119,17 @@ const SegmentFurnitureItem = ({item, index}: SegmentFurnitureItemProps) => {
               paddingRight: 20,
             },
           ]}>
-          <Image
-            resizeMethod={'scale'}
-            resizeMode={'stretch'}
-            style={{
-              width: width * 0.5,
-              height: height * 0.2,
-            }}
-            source={item.images[0]}
-          />
+          <SharedElement id={`furniture-image-${item.id}`}>
+            <Image
+              resizeMethod={'scale'}
+              resizeMode={'stretch'}
+              style={{
+                width: width * 0.5,
+                height: height * 0.2,
+              }}
+              source={item.images[0]}
+            />
+          </SharedElement>
         </TouchableOpacity>
       </TouchableOpacity>
       <Modal
@@ -128,7 +143,7 @@ const SegmentFurnitureItem = ({item, index}: SegmentFurnitureItemProps) => {
         animationIn={'zoomIn'}
         animationOut={'zoomOut'}
         isVisible={showModal}>
-        <Carousel images={item.images} />
+        <Carousel offset={100} images={item.images} />
       </Modal>
     </View>
   );

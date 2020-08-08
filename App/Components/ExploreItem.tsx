@@ -10,49 +10,73 @@ import {
 } from 'react-native';
 import {Furniture} from '../Assets/Api/furniture';
 import {colors} from '../Theme/index';
+import {SharedElement} from 'react-navigation-shared-element';
 
 type ExploreItemProps = {
   item: Furniture;
   index: number;
+  onClick: Function;
 };
-const ExploreItem = ({item, index}: ExploreItemProps) => {
-  const {width, height} = useWindowDimensions();
+const ExploreItem = ({item, index, onClick}: ExploreItemProps) => {
+  const {width} = useWindowDimensions();
 
   return (
     <TouchableOpacity
+      onPress={() => onClick(item, index)}
       activeOpacity={0.6}
       style={[
         styles.container,
         {
           width: width * 0.4,
           height: width * 0.45,
-          backgroundColor: colors[`furniture${index % 4}`],
         },
       ]}>
+      <View
+        style={{
+          flex: 1,
+          width: width * 0.4,
+          height: width * 0.45,
+          backgroundColor: colors[`furniture${index % 4}`],
+          position: 'absolute',
+          borderRadius: 15,
+        }}
+      />
+
       <View
         style={{
           width: '100%',
           justifyContent: 'flex-start',
           alignItems: 'center',
         }}>
-        <Image
+        <SharedElement
           style={{
             width: width * 0.4 - 40,
             height: width * 0.3,
-            resizeMode: 'contain',
           }}
-          source={item.images[0]}
-        />
+          id={`explore-image-${item.id}`}>
+          <Image
+            style={{
+              width: width * 0.4 - 40,
+              height: width * 0.3,
+              resizeMode: 'contain',
+            }}
+            source={item.images[0]}
+          />
+        </SharedElement>
       </View>
 
       <View
         style={{
           paddingBottom: 5,
         }}>
-        <Text numberOfLines={1} style={[styles.name]}>
-          {item.name}
-        </Text>
-        <Text style={[styles.price]}>{item.price} $</Text>
+        <SharedElement id={`explore-${item.name}-${item.id}`}>
+          <Text numberOfLines={1} style={[styles.name]}>
+            {item.name}
+          </Text>
+        </SharedElement>
+        <SharedElement id={`explore-${item.price}-${item.id}`}>
+          <Text style={[styles.price]}>{item.price} $</Text>
+        </SharedElement>
       </View>
     </TouchableOpacity>
   );

@@ -9,23 +9,36 @@ import {
 } from 'react-native';
 import CarouselItem from './CarouselItem';
 
-const {width} = Dimensions.get('window');
+const {width, height: Height} = Dimensions.get('window');
 
 type CarouselProps = {
   images: Array<any>;
+  height?: number;
+  offset?: number;
+  backgroundColor?: string;
+  activeColor?: string;
+  shared?: string;
+  id?: string;
 };
-const Carousel = ({images}: CarouselProps) => {
+const Carousel = ({
+  images,
+  height = Height * 0.4,
+  offset = 100,
+  backgroundColor = 'white',
+  activeColor = 'gray',
+  shared = '',
+  id = '',
+}: CarouselProps) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   let position = Animated.divide(scrollX, width);
   const flatList = useRef(null);
-  const deviceHeight = useWindowDimensions().height;
   if (images) {
     return (
       <View
         style={{
-          height: deviceHeight * 0.4,
+          height: height,
           justifyContent: 'center',
-          backgroundColor: 'white',
+          backgroundColor: backgroundColor,
           alignItems: 'center',
           marginHorizontal: 20,
           padding: 10,
@@ -43,8 +56,17 @@ const Carousel = ({images}: CarouselProps) => {
           scrollEventThrottle={16}
           decelerationRate={'fast'}
           showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => {
-            return <CarouselItem image={item} />;
+          renderItem={({item, index}) => {
+            return (
+              <CarouselItem
+                id={id}
+                index={index}
+                shared={shared}
+                offset={offset}
+                height={height * 0.7}
+                image={item}
+              />
+            );
           }}
           onScroll={Animated.event(
             [
@@ -70,7 +92,7 @@ const Carousel = ({images}: CarouselProps) => {
                   opacity,
                   height: 10,
                   width: 10,
-                  backgroundColor: 'gray',
+                  backgroundColor: activeColor,
                   margin: 8,
                   borderRadius: 5,
                 }}
