@@ -8,6 +8,7 @@
 This is the first part of the series of React Native Apps based on random Dribbble designs.
 
 iOS ✔️ ❤️ Android ✔️
+<img src="https://user-images.githubusercontent.com/28846043/89713299-82cc7700-d9b4-11ea-9766-7e2e27cdb539.gif" width="350">
 
 ---
 
