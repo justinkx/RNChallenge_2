@@ -14,7 +14,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {SharedStackParams} from '../../Navigation/Navigator';
 import {RouteProp} from '@react-navigation/native';
 import {colors} from '../../Theme/index';
-import {furnitures, Furniture} from '../../Assets/Api/furniture';
+import {recentViewed, Furniture} from '../../Assets/Api/furniture';
 import DetailsHeader from './DetailsHeader';
 import {Rating} from 'react-native-ratings';
 import {SharedElement} from 'react-navigation-shared-element';
@@ -22,6 +22,9 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ColorPicker from '../../Components/ColorPicker';
 import QuantityPicker from '../../Components/QuantityPicker';
 import AddToBagButton from '../../Components/AddToBagButton';
+import RecentlyViewed from '../../Components/RecentlyViewed';
+import Cart from '../Cart/Cart';
+import Modal from 'react-native-modal';
 
 type DetailNavigationProp = StackNavigationProp<SharedStackParams, 'Details'>;
 type DetailRouteProps = RouteProp<SharedStackParams, 'Details'>;
@@ -36,16 +39,30 @@ const DetailsPage = ({navigation, route}: Props) => {
   const insets = useSafeAreaInsets();
   const [quandity, setQuandity] = useState(0);
   const [addToBagQuandity, setBagQuandity] = useState(0);
+  const [showCart, setCart] = useState(false);
   return (
     <View
       style={[
         styles.safeAreaView,
         {
           paddingTop: insets.top,
-          paddingBottom: insets.bottom,
         },
       ]}>
+      <Modal
+        style={{
+          padding: 0,
+          margin: 0,
+        }}
+        useNativeDriver={true}
+        onBackButtonPress={() => setCart(false)}
+        onBackdropPress={() => setCart(false)}
+        animationOut={'slideOutDown'}
+        animationIn={'slideInUp'}
+        isVisible={showCart}>
+        <Cart closeCart={() => setCart(false)} />
+      </Modal>
       <DetailsHeader
+        goToCart={() => setCart(true)}
         quandity={addToBagQuandity}
         shared={shareId}
         id={id}
@@ -55,6 +72,9 @@ const DetailsPage = ({navigation, route}: Props) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         bounces={false}
+        style={{
+          flex: 1,
+        }}
         contentContainerStyle={[styles.content]}>
         <View style={[styles.Details]}>
           <View style={[styles.row]}>
@@ -132,7 +152,13 @@ const DetailsPage = ({navigation, route}: Props) => {
               }}
             />
           </View>
+          <Text style={[styles.recentlyViewed]}>RECENTLY VIEWED</Text>
         </View>
+        <ScrollView bounces horizontal showsHorizontalScrollIndicator={false}>
+          {recentViewed().map((item: Furniture, index: number) => (
+            <RecentlyViewed index={index} furniture={item} key={item.id} />
+          ))}
+        </ScrollView>
       </ScrollView>
     </View>
   );
@@ -185,5 +211,12 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '600',
     color: '#757575',
+  },
+  recentlyViewed: {
+    marginBottom: 20,
+    marginTop: 30,
+    fontWeight: 'bold',
+    fontSize: 19,
+    color: 'black',
   },
 });

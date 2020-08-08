@@ -6,6 +6,7 @@ export interface Furniture {
   price: number;
   images: Array<any>;
   rating?: number;
+  quandity?: number;
 }
 export const furnitures: Furniture[] = [
   {
@@ -254,11 +255,28 @@ export function exploreFurniture() {
   ];
   return _furnitures;
 }
+export function recentViewed() {
+  let _furnitures = [
+    ...furnitures.filter((item) => item.type === 'Sofa').slice(2, 4),
+    ...furnitures.filter((item) => item.type === 'Bed').slice(2, 4),
+    ...furnitures.filter((item) => item.type === 'Chair').slice(2, 4),
+    ...furnitures.filter((item) => item.type === 'Desk').slice(2, 4),
+    ...furnitures.filter((item) => item.type === 'Bath').slice(2, 4),
+  ];
+  return _furnitures;
+}
 export interface SegmentItem {
   name: string;
   type: 'Chair' | 'Sofa' | 'Bed' | 'Desk' | 'Bath';
 }
-
+export const cartItems = (): Furniture[] => {
+  return furnitures
+    .filter((item: Furniture) => parseInt(item.id) % 3 === 0)
+    .map((item: Furniture) => {
+      item.quandity = 1;
+      return item;
+    });
+};
 export const segmentItems: SegmentItem[] = [
   {
     name: 'CHAIRS',

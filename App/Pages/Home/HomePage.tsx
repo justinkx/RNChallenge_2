@@ -35,7 +35,6 @@ type Props = {
 };
 const HomePage = ({navigation}: Props) => {
   const exploreItems = exploreFurniture();
-  console.log('exploreItems', exploreItems);
   const scrollY = useRef(new Animated.Value(0)).current;
   const animatedHeight = scrollY.interpolate({
     inputRange: [0, 300],

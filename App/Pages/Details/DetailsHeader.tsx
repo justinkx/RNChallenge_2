@@ -21,6 +21,7 @@ type Props = {
   id: string;
   shared: string;
   quandity?: number;
+  goToCart?: Function;
 };
 const DetailsHeader = ({
   headerColor,
@@ -28,12 +29,15 @@ const DetailsHeader = ({
   id,
   shared,
   quandity = 0,
+  goToCart,
 }: Props) => {
   const {width, height} = useWindowDimensions();
   const navigation = useNavigation();
   const shakeAnim = useRef(new Animated.Value(0)).current;
   useEffect(() => {
-    shakeAnimation();
+    if (quandity > 0) {
+      shakeAnimation();
+    }
   }, [quandity]);
   const shakeAnimation = () => {
     Animated.sequence([
@@ -98,7 +102,7 @@ const DetailsHeader = ({
             alignItems: 'center',
             flexDirection: 'row',
           }}>
-          <TouchableOpacity style={[styles.likeBtn]}>
+          <TouchableOpacity onPress={() => goToCart()} style={[styles.likeBtn]}>
             <Animated.View
               style={[
                 styles.badge,
